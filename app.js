@@ -71,15 +71,14 @@ app.post('/signup', function (req, res){
 	Usuario.findOne({'email':req.param('email')}, function(error, object){
 		if(object==null){
 			console.log("No existe usuario, procede a registro...");
+
 			var usuario = new Usuario({
 				nombre:         req.param('nombre'),
 				apellidos:      req.param('apellidos'),
 				email:         	req.param('email'),
 				password:      	req.param('password'),
-				codigo_postal: 	req.param('cp'),
-				categorias: 	req.param('categorias'),		
-				horario: 		req.param('horario'),
-				tiendas:		req.param('tiendas'),
+				codigo_postal: 	req.param('cp'),			
+				horario: 		req.param('horario'),			
 				tarjeta: 		req.param('tarjeta')
 			});
 			console.log('Usuario por Guardar:'+ usuario);

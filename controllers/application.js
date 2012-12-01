@@ -204,8 +204,8 @@ function promocion(req, res){
 		titulo: 		req.param('titulo'),
 		categoria: 		req.param('categorias'),
 		tipo: 			req.param('tipo'),
-		fecha_desde: 	req.param('fecha_inicio'),
-		fecha_hasta: 	req.param('fecha_hasta'),
+		fecha_desde: 	new Date (req.param('fecha_inicio')),
+		fecha_hasta: 	new Date (req.param('fecha_hasta')),
 		descripcion: 	req.param('descripcion'),
 		url: 			req.param('imagen')
 	});

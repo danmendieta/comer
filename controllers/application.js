@@ -75,17 +75,32 @@ var cronJob = require('cron').CronJob;
 
 var db = mongoose.createConnection('108.166.84.122', 'comercialmexicana');
 
+ var CloudPush = require('ti.cloudpush');
+        CloudPush.debug = true;
+        CloudPush.enabled = true;
+    var deviceToken
+ 
+    var Cloud = require('ti.cloud');
+        Cloud.debug = true;
+
 // Configuration
+var categoriaSchema = mongoose.Schema({
+	categoria: {type:String, index:false}
+});
+var tiendaSchema = mongoose.Schema({
+	tienda:{type:String, index:false}
+});
 var usuariosSchema = mongoose.Schema({
 	nombre:         String,
 	apellidos:      String,
 	email:         	String,
+	token: 			String,
 	password:      	String,
 	codigo_postal: 	String,
-	categorias: 	[{categoria:String}],
+	categorias: 	[categoriaSchema],
 	register:      {type: Date, default:Date.now},
 	horario: 		Number,
-	tiendas:		[{tienda:String}],
+	tiendas:		[tiendaSchema],
 	tarjeta: 		String
 	
 });
@@ -128,65 +143,56 @@ function signup(req, res){
 	console.log(req);
 	Usuario.findOne({'email':req.param('email')}, function(error, object){
 		if(object==null){
-			console.log("No existe usuario, procede a registro...");
+		    ACS.Users.login({
+			    login:'admin@mail.com',
+			    password:'admin'
+		    }, function(data) {
+		        if(data.success) {
+		        	var user= data.users[0];
+		        	console.log("Usuario logeado" +user.first_name);				        	
+			        Cloud.PushNotifications.subscribe({
+		                channel: 'ofertas',
+		                device_token: deviceToken,
+		                type: 'ios'
+		            }, function (e) {
+		                if (e.success) {
+		                   console.log('Subscribed!');
+		                   console.log("No existe usuario, procede a registro...");
+							var usu = new Usuario({
+								nombre:         req.param('nombre'),
+								apellidos:      req.param('apellidos'),
+								email:         	req.param('email'),
+								password:      	req.param('password'),
+								codigo_postal: 	req.param('cp'),			
+								horario: 		req.param('horario'),			
+								tarjeta: 		req.param('tarjeta')
+							});
+							console.log('Usuario por Guardar:'+ usu);
+							usu.save(function(err){
+								if(err==null){
+									console.log("Usuario Guardado Exitosamente");
+									res.send({estado:true, msg:"OK"});
+								}else{
+									console.log("Error guardando usuario"+err);
+									res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
+								}
+							});	
+		                }
+		                else {
+		                    console.log('Error:' +((e.error && e.message) || JSON.stringify(e)));
+		                }
+		            });
+			    
+		        } else {
+		           console.log("Usuario sin logear"+data.error+ " "+ data.message);
+		        }
+		    });		 
 
-			var usuario = new Usuario({
-				nombre:         req.param('nombre'),
-				apellidos:      req.param('apellidos'),
-				email:         	req.param('email'),
-				password:      	req.param('password'),
-				codigo_postal: 	req.param('cp'),			
-				horario: 		req.param('horario'),			
-				tarjeta: 		req.param('tarjeta')
-			});
-			console.log('Usuario por Guardar:'+ usuario);
-			Usuario.save(function(err){
-				if(err==null){
-					console.log("Usuario Guardado Exitosamente");
-					res.send({estado:true, msg:"OK"});
-				}else{
-					console.log("Error guardando usuario"+err);
-					res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
-				}
-			});	
-		}else if(error){
-			console.log("Error 500 " + error);
-			res.send({estado:false, msg:"Error 500"}) //Ya esta registrado el usuario 
-		}else{
-			console.log("Error 300 " + object);
-			res.send({estado:false, msg:"Error 300"}) //Ya esta registrado el usuario 
-		}
-	});//fin find User exists
-}
 
 
 
-function signupget(req, res){
-	console.log("/signupget");
-	console.log(req);
-	Usuario.findOne({'email':req.param('email')}, function(error, object){
-		if(object==null){
-			console.log("No existe usuario, procede a registro...");
 
-			var usuario = new Usuario({
-				nombre:         req.param('nombre'),
-				apellidos:      req.param('apellidos'),
-				email:         	req.param('email'),
-				password:      	req.param('password'),
-				codigo_postal: 	req.param('cp'),			
-				horario: 		req.param('horario'),			
-				tarjeta: 		req.param('tarjeta')
-			});
-			console.log('Usuario por Guardar:'+ usuario);
-			Usuario.save(function(err){
-				if(err==null){
-					console.log("Usuario Guardado Exitosamente");
-					res.send({estado:true, msg:"OK"});
-				}else{
-					console.log("Error guardando usuario"+err);
-					res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
-				}
-			});	
+			
 		}else if(error){
 			console.log("Error 500 " + error);
 			res.send({estado:false, msg:"Error 500"}) //Ya esta registrado el usuario 
@@ -213,13 +219,14 @@ function setpromocion(req, res){
 	promo.save(function(err){
 		if(err==null){
 			console.log("Promocion Guardada Exitosamente");
-			//res.send({estado:true, msg:"OK"});
+			res.send({estado:true, msg:"OK"});
 		}else{
 			console.log("Error guardando usuario"+err);
-			//res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
+			res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
 		}
 	});	
 }
+
 
 
 function test(req,res){

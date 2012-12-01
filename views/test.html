@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	   <script>
+	     $(document).ready(function(){
+		    $("#sub").click(function(){
+		    	var envio = {
+		    		nombre: "daniel",
+					apellidos: "mendieta",
+					email: "mail@mail.com",
+					password:"1234566",
+					cp:"57500",
+					categorias:[{categoria:"damas"},{categoria:"ropa"},{categoria:"lacteos"}],
+					horario: 1,
+					tiendas: [{tienda:"57500"},{tienda:"5500"},{tienda:"0987"}],
+					tarjeta:"9823752304851256"
+		    		}
+					console.log(envio);
+		      $.ajax({
+				type : 'post',
+				url : 'http://localhost:9000/signup',
+				dataType : 'json',
+				data: envio
+				,success : function(data){
+				    console.log(data);
+				},error : function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log(JSON.stringify(XMLHttpRequest) + ' ' + textStatus +'  '+errorThrown );
+				}
+			});//fin ajax
+			return false; 
+		    });
+		  });
+	   </script>
+	</head>
+	<body>
+		<form id="nuevousuario">
+			<input type="submit" name="sub" id="sub">
+		</form>
+	</body>
+</html>

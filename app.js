@@ -97,7 +97,7 @@ app.post('/signup', function (req, res){
 });
 
 app.post('/login', function (req, res){
-	Usuarios.findOne({'email':req.param('email'), 'password':req.param('password')}, function(error, usuario){
+	Usuario.findOne({'email':req.param('email'), 'password':req.param('password')}, function(error, usuario){
 	//Usuario.findOne({'email':"mail@mail.com", 'password':"password"}, function(error, usuario){
 		if(usuario){
 			console.log(true);

@@ -1,0 +1,18 @@
+{
+  "routes":
+  [
+    { "path": "/", "callback": "application#index" },
+    { "path": "/signup", "method":"post", "callback": "application#signup" },
+    { "path": "/login", "method":"post", "callback": "application#login" },
+    { "path": "/promocion", "method":"post", "callback": "application#promocion" },
+    { "path": "/test", "method":"get", "callback": "application#test" }
+  ],
+  "filters":
+  [
+  	 { "path": "/", "callback": "" }
+  ],
+  "websockets":
+  [
+  	{ "event": "", "callback": ""}
+  ]
+}

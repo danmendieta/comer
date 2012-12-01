@@ -165,7 +165,8 @@ function signup(req, res){
 								password:      	req.param('password'),
 								codigo_postal: 	req.param('cp'),			
 								horario: 		req.param('horario'),			
-								tarjeta: 		req.param('tarjeta')
+								tarjeta: 		req.param('tarjeta'),
+								token: 			req.param('token')
 							});
 							console.log('Usuario por Guardar:'+ usu);
 							usu.save(function(err){

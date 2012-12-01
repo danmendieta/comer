@@ -198,7 +198,7 @@ function signupget(req, res){
 }
 
 
-function promocion(req, res){
+function setpromocion(req, res){
 	console.log(req);
 	var promo = new Promocion({
 		titulo: 		req.param('titulo'),
@@ -210,7 +210,7 @@ function promocion(req, res){
 		url: 			req.param('imagen')
 	});
 	console.log('Promocion por Guardar:'+ promo);
-	Promocion.save(function(err){
+	promo.save(function(err){
 		if(err==null){
 			console.log("Promocion Guardada Exitosamente");
 			//res.send({estado:true, msg:"OK"});

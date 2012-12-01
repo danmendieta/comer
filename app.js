@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , mongoose = require('mongoose')
 
+var cronJob = require('cron').CronJob;
 
 var db = mongoose.createConnection('108.166.84.122', 'comercialmexicana');
 
@@ -96,8 +97,8 @@ app.post('/signup', function (req, res){
 });
 
 app.post('/login', function (req, res){
-	//Usuarios.findOne({'email':req.param('email'), 'password':req.param('password')}, function(error, usuario){
-	Usuario.findOne({'email':"mail@mail.com", 'password':"password"}, function(error, usuario){
+	Usuarios.findOne({'email':req.param('email'), 'password':req.param('password')}, function(error, usuario){
+	//Usuario.findOne({'email':"mail@mail.com", 'password':"password"}, function(error, usuario){
 		if(usuario){
 			console.log(true);
 		}else{
@@ -148,20 +149,46 @@ app.post('/promocion', function (req, res){
 
 
 
-app.get('/login', function (req, res){
-	//Usuarios.findOne({'email':req.param('email'), 'password':req.param('password')}, function(error, usuario){
-	Usuario.findOne({'email':"mail@mail.com", 'password':"password"}, function(error, usuario){
-		if(usuario){
-			console.log({response:true});
-			res.send({response:true});
-		}else{
-			res.send({response:false});
-			console.log("Error:"+error);
-		}
-	});
-}); //end get /login
 
 
+
+
+
+var mañana = new cronJob({
+  cronTime: '00 00 09 * * 1-7',
+  onTick: function() {
+  	//Ejecuta codigo para mañana
+  },
+  start: true,
+  timeZone: "America/Mexico_City"
+});
+
+
+var tarde = new cronJob({
+  cronTime: '00 00 14 * * 1-7',
+  onTick: function() {
+  	//Ejecuta codigo para tarde
+  },
+  start: true,
+  timeZone: "America/Mexico_City"
+});
+
+
+
+
+var noche = new cronJob({
+  cronTime: '00 00 19 * * 1-7',
+  onTick: function() {
+  	//Ejecuta codigo para noche
+  },
+  start: true,
+  timeZone: "America/Mexico_City"
+});
+
+
+mañana.start();
+tarde.start();
+noche.start();
 
 
 

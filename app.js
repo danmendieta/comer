@@ -101,8 +101,10 @@ app.post('/login', function (req, res){
 	//Usuario.findOne({'email':"mail@mail.com", 'password':"password"}, function(error, usuario){
 		if(usuario){
 			console.log(true);
+			res.send({estado:true, msg:"Bienvenido"})
 		}else{
 			console.log(error);
+			res.send({estado:false, msg:"Error 400"})
 		}
 	});
 });//end post /login

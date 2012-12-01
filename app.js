@@ -92,8 +92,11 @@ app.post('/signup', function (req, res){
 					res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
 				}
 			});	
+		}else if(error){
+			console.log("Error 500 " + error);
+			res.send({estado:false, msg:"Error 500"}) //Ya esta registrado el usuario 
 		}else{
-			console.log("Error 300");
+			console.log("Error 300 " + object);
 			res.send({estado:false, msg:"Error 300"}) //Ya esta registrado el usuario 
 		}
 	});//fin find User exists

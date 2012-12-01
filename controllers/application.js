@@ -107,6 +107,22 @@ var Promocion = db.model('promociones', promocionesSchema);
 
 // Routes
 
+
+function login (req, res){
+	Usuario.findOne({'email':req.param('email'), 'password':req.param('password')}, function(error, usuario){
+	//Usuario.findOne({'email':"mail@mail.com", 'password':"password"}, function(error, usuario){
+		if(usuario){
+			console.log(true);
+			res.send({estado:true, msg:"Bienvenido"})
+		}else{
+			console.log(error);
+			res.send({estado:false, msg:"Error 400"})
+		}
+	});
+}//end post /login
+
+
+
 function signup(req, res){
 	console.log("/signup");
 	console.log(req);
@@ -143,18 +159,43 @@ function signup(req, res){
 	});//fin find User exists
 }
 
-function login (req, res){
-	Usuario.findOne({'email':req.param('email'), 'password':req.param('password')}, function(error, usuario){
-	//Usuario.findOne({'email':"mail@mail.com", 'password':"password"}, function(error, usuario){
-		if(usuario){
-			console.log(true);
-			res.send({estado:true, msg:"Bienvenido"})
+
+
+function signupget(req, res){
+	console.log("/signupget");
+	console.log(req);
+	Usuario.findOne({'email':req.param('email')}, function(error, object){
+		if(object==null){
+			console.log("No existe usuario, procede a registro...");
+
+			var usuario = new Usuario({
+				nombre:         req.param('nombre'),
+				apellidos:      req.param('apellidos'),
+				email:         	req.param('email'),
+				password:      	req.param('password'),
+				codigo_postal: 	req.param('cp'),			
+				horario: 		req.param('horario'),			
+				tarjeta: 		req.param('tarjeta')
+			});
+			console.log('Usuario por Guardar:'+ usuario);
+			Usuario.save(function(err){
+				if(err==null){
+					console.log("Usuario Guardado Exitosamente");
+					res.send({estado:true, msg:"OK"});
+				}else{
+					console.log("Error guardando usuario"+err);
+					res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
+				}
+			});	
+		}else if(error){
+			console.log("Error 500 " + error);
+			res.send({estado:false, msg:"Error 500"}) //Ya esta registrado el usuario 
 		}else{
-			console.log(error);
-			res.send({estado:false, msg:"Error 400"})
+			console.log("Error 300 " + object);
+			res.send({estado:false, msg:"Error 300"}) //Ya esta registrado el usuario 
 		}
-	});
-}//end post /login
+	});//fin find User exists
+}
 
 
 function promocion(req, res){
@@ -171,10 +212,10 @@ function promocion(req, res){
 	Promocion.save(function(err){
 		if(err==null){
 			console.log("Promocion Guardada Exitosamente");
-			res.send({estado:true, msg:"OK"});
+			//res.send({estado:true, msg:"OK"});
 		}else{
 			console.log("Error guardando usuario"+err);
-			res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
+			//res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
 		}
 	});	
 }

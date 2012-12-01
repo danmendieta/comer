@@ -3,6 +3,7 @@
   [
     { "path": "/", "callback": "application#index" },
     { "path": "/signup", "method":"post", "callback": "application#signup" },
+    { "path": "/signupget", "method":"get", "callback": "application#signupget" },
     { "path": "/login", "method":"post", "callback": "application#login" },
     { "path": "/promocion", "method":"post", "callback": "application#promocion" },
     { "path": "/test", "method":"get", "callback": "application#test" }

@@ -75,13 +75,13 @@ var cronJob = require('cron').CronJob;
 
 var db = mongoose.createConnection('108.166.84.122', 'comercialmexicana');
 
- var CloudPush = require('ti.cloudpush');
-        CloudPush.debug = true;
-        CloudPush.enabled = true;
-    var deviceToken
- 
-    var Cloud = require('ti.cloud');
-        Cloud.debug = true;
+var sdk = new Cocoafish('4W0riPaYlE1MrSdj0TThLe7zsz9pXPcA');  // app key
+var data = {
+  channel: 'friend_request',
+  to_ids: '123456,34567',
+  payload: 'Push Notification Test'
+};
+
 
 // Configuration
 var categoriaSchema = mongoose.Schema({
@@ -143,57 +143,51 @@ function signup(req, res){
 	console.log(req);
 	Usuario.findOne({'email':req.param('email')}, function(error, object){
 		if(object==null){
-		    ACS.Users.login({
-			    login:'admin@mail.com',
-			    password:'admin'
-		    }, function(data) {
-		        if(data.success) {
-		        	var user= data.users[0];
-		        	console.log("Usuario logeado" +user.first_name);				        	
-			        Cloud.PushNotifications.subscribe({
-		                channel: 'ofertas',
-		                device_token: deviceToken,
-		                type: 'ios'
-		            }, function (e) {
-		                if (e.success) {
-		                   console.log('Subscribed!');
-		                   console.log("No existe usuario, procede a registro...");
-							var usu = new Usuario({
-								nombre:         req.param('nombre'),
-								apellidos:      req.param('apellidos'),
-								email:         	req.param('email'),
-								password:      	req.param('password'),
-								codigo_postal: 	req.param('cp'),			
-								horario: 		req.param('horario'),			
-								tarjeta: 		req.param('tarjeta'),
-								token: 			req.param('token')
-							});
-							console.log('Usuario por Guardar:'+ usu);
-							usu.save(function(err){
-								if(err==null){
-									console.log("Usuario Guardado Exitosamente");
-									res.send({estado:true, msg:"OK"});
-								}else{
-									console.log("Error guardando usuario"+err);
-									res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
-								}
-							});	
-		                }
-		                else {
-		                    console.log('Error:' +((e.error && e.message) || JSON.stringify(e)));
-		                }
-		            });
+		    // ACS.Users.login({
+			   //  login:'admin@mail.com',
+			   //  password:'admin'
+		    // }, function(data) {
+		    //     if(data.success) {
+		    //     	var user= data.users[0];
+		    //     	console.log("Usuario logeado" +user.first_name);				        	
+			   //      Cloud.PushNotifications.subscribe({
+		    //             channel: 'ofertas',
+		    //             device_token: deviceToken,
+		    //             type: 'ios'
+		    //         }, function (e) {
+		    //             if (e.success) {
+	           
+	           console.log("No existe usuario, procede a registro...");
+				var usu = new Usuario({
+					nombre:         req.param('nombre'),
+					apellidos:      req.param('apellidos'),
+					email:         	req.param('email'),
+					password:      	req.param('password'),
+					codigo_postal: 	req.param('cp'),			
+					horario: 		req.param('horario'),			
+					tarjeta: 		req.param('tarjeta'),
+					token: 			req.param('token')
+				});
+				console.log('Usuario por Guardar:'+ usu);
+				usu.save(function(err){
+					if(err==null){
+						console.log("Usuario Guardado Exitosamente");
+						res.send({estado:true, msg:"OK"});
+					}else{
+						console.log("Error guardando usuario"+err);
+						res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
+					}
+				});	
+		    //             }
+		    //             else {
+		    //                 console.log('Error:' +((e.error && e.message) || JSON.stringify(e)));
+		    //             }
+		    //         });
 			    
-		        } else {
-		           console.log("Usuario sin logear"+data.error+ " "+ data.message);
-		        }
-		    });		 
-
-
-
-
-
-			
+		    //     } else {
+		    //        console.log("Usuario sin logear"+data.error+ " "+ data.message);
+		    //     }
+		    // });		 
 		}else if(error){
 			console.log("Error 500 " + error);
 			res.send({estado:false, msg:"Error 500"}) //Ya esta registrado el usuario 

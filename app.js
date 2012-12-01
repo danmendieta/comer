@@ -66,8 +66,11 @@ app.configure('production', function(){
 app.get('/', routes.index);
 
 app.post('/signup', function (req, res){
+	console.log("/signup");
+	console.log(req);
 	Usuario.findOne({'email':req.param('email')}, function(error, object){
 		if(object==null){
+			console.log("No existe usuario, procede a registro...");
 			var usuario = new Usuario({
 				nombre:         req.param('nombre'),
 				apellidos:      req.param('apellidos'),
@@ -109,7 +112,9 @@ app.post('/login', function (req, res){
 	});
 });//end post /login
 
+app.post('/update', function (req, res){
 
+});
 
 app.post('/promocion', function (req, res){
 	var promo = new Promocion({

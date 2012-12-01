@@ -199,6 +199,7 @@ function signupget(req, res){
 
 
 function promocion(req, res){
+	console.log(req);
 	var promo = new Promocion({
 		titulo: 		req.param('titulo'),
 		categoria: 		req.param('categorias'),
@@ -209,7 +210,7 @@ function promocion(req, res){
 		url: 			req.param('imagen')
 	});
 	console.log('Promocion por Guardar:'+ promo);
-	Promocion.save(function(err){
+	repl.start(prompt, source, eval, useGlobal, ignoreUndefined);.save(function(err){
 		if(err==null){
 			console.log("Promocion Guardada Exitosamente");
 			//res.send({estado:true, msg:"OK"});
@@ -218,6 +219,11 @@ function promocion(req, res){
 			//res.send({estado:false, msg:"Error 200"}); //Error al guardar en db
 		}
 	});	
+}
+
+
+function getPromocion(req, res){
+
 }
 
 

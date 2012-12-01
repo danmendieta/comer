@@ -2,49 +2,49 @@ var ACS = require('acs').ACS;
 ACS.init('vxPVmw3CkNroSWECVyPj3D7XHzYlaTdc', 'R1CfJ6t2ubMDqRH90kg7pv7wwR08dFpp')
 
 function index(req, res){
-	mañana();	
+	//mañana();	
 }
 
 
-function mañana(){
-	ACS.Users.query({
-	    where: '{"Horario":1}'	    
-    }, function(data) {
-        if(data.success) {
-        	matchUsuarioPromocion(data.users);
-        } else {
+// function mañana(){
+// 	ACS.Users.query({
+// 	    where: '{"Horario":1}'	    
+//     }, function(data) {
+//         if(data.success) {
+//         	matchUsuarioPromocion(data.users);
+//         } else {
             
-            console.log('Error occured. Error code: ' + data.error + '. Message: ' + data.message);
-        }
-    });
-}//fin mañana 
+//             console.log('Error occured. Error code: ' + data.error + '. Message: ' + data.message);
+//         }
+//     });
+// }//fin mañana 
 
-function tarde(){
-	ACS.Users.query({
-	    where: '{"Horario":2}'	    
-    }, function(data) {
-        if(data.success) {
-        	matchUsuarioPromocion(data.users);
-        } else {
+// function tarde(){
+// 	ACS.Users.query({
+// 	    where: '{"Horario":2}'	    
+//     }, function(data) {
+//         if(data.success) {
+//         	matchUsuarioPromocion(data.users);
+//         } else {
             
-            console.log('Error occured. Error code: ' + data.error + '. Message: ' + data.message);
-        }
-    });
-}//fin tarde
+//             console.log('Error occured. Error code: ' + data.error + '. Message: ' + data.message);
+//         }
+//     });
+// }//fin tarde
 
 
-function noche(){
-	ACS.Users.query({
-	    where: '{"Horario":3}'
-    }, function(data) {
-        if(data.success) {
-        	matchUsuarioPromocion(data.users);
-        } else {
+// function noche(){
+// 	ACS.Users.query({
+// 	    where: '{"Horario":3}'
+//     }, function(data) {
+//         if(data.success) {
+//         	matchUsuarioPromocion(data.users);
+//         } else {
             
-            console.log('Error occured. Error code: ' + data.error + '. Message: ' + data.message);
-        }
-    });
-}//fin noche
+//             console.log('Error occured. Error code: ' + data.error + '. Message: ' + data.message);
+//         }
+//     });
+// }//fin noche
 
 
 function matchUsuarioPromocion( ){

@@ -75,12 +75,12 @@ var cronJob = require('cron').CronJob;
 
 var db = mongoose.createConnection('108.166.84.122', 'comercialmexicana');
 
-var sdk = new Cocoafish('4W0riPaYlE1MrSdj0TThLe7zsz9pXPcA');  // app key
-var data = {
-  channel: 'friend_request',
-  to_ids: '123456,34567',
-  payload: 'Push Notification Test'
-};
+// var sdk = new Cocoafish('4W0riPaYlE1MrSdj0TThLe7zsz9pXPcA');  // app key
+// var data = {
+//   channel: 'friend_request',
+//   to_ids: '123456,34567',
+//   payload: 'Push Notification Test'
+// };
 
 
 // Configuration
